@@ -99,8 +99,20 @@ function render() {
 //   registerPanel(() => h("div", { class: "panel" }, ...));
 //   navigate("myview", { id: 1 });
 
-// -- Feature: restaurant list (not built yet) -------------------------
-// registerView("restaurants", () => ...);
+// -- Feature: restaurant list -----------------------------------------
+registerView("restaurants", () =>
+  h("section", {},
+    h("h2", {}, "Restaurants"),
+    h("div", { class: "list" },
+      Data.restaurants().map((r) =>
+        h("div", { class: "row" },   // TODO (menu feature): make clickable -> navigate("menu", { id: r.id })
+          h("span", {}, h("strong", {}, r.name), h("small", {}, r.cuisine)),
+          h("small", {}, `${r.eta_min} min`)
+        )
+      )
+    )
+  )
+);
 
 // -- Feature: menu (not built yet) ------------------------------------
 // registerView("menu", ({ id }) => ...);
