@@ -105,9 +105,56 @@ function render() {
 // -- Feature: menu (not built yet) ------------------------------------
 // registerView("menu", ({ id }) => ...);
 
-// -- Feature: cart (not built yet) ------------------------------------
-// State.set({ cart: [] });
-// registerPanel(() => ...);
+
+ // -- Feature: cart (PBI-04: Add items to cart) -------------------------
+
+// Create an empty cart when the app starts
+State.set({ cart: [] });
+
+// Function to add a menu item to the cart
+function addToCart(itemId) {
+  // Find the item from the menu
+  const item = Data.menuItem(itemId);
+
+  if (!item) {
+    return false;
+  }
+
+  const cart = State.get("cart");
+
+  // Check if the cart already has items from another restaurant
+  if (cart.length > 0) {
+    const firstItem = Data.menuItem(cart[0].itemId);
+
+    if (firstItem.restaurant_id !== item.restaurant_id) {
+      alert("You can only order from one restaurant at a time.");
+      return false;
+    }
+  }
+
+  // Check if the item is already in the cart
+  const existingItem = cart.find((c) => c.itemId === itemId);
+
+  let updatedCart;
+
+  if (existingItem) {
+    // Increase quantity when the item is already in the cart
+    updatedCart = cart.map((c) =>
+      c.itemId === itemId
+        ? { ...c, quantity: c.quantity + 1 }
+        : c
+    );
+  } else {
+    // Add a new item with quantity 1
+    updatedCart = [...cart, { itemId: itemId, quantity: 1 }];
+  }
+
+  // Save the updated cart
+  State.set({ cart: updatedCart });
+
+  return true;
+}
+
 
 // ===== 7. START =======================================================
 if (typeof document !== "undefined") {
@@ -116,4 +163,4 @@ if (typeof document !== "undefined") {
 }
 
 // Lets Node tests import the logic: require("./script.js")
-if (typeof module !== "undefined") module.exports = { DB, Data, State, money };
+if (typeof module !== "undefined") module.exports = { DB, Data, State, money, addToCart };
