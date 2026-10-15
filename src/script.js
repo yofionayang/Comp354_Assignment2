@@ -107,8 +107,17 @@ function render() {
 //   navigate("myview", { id: 1 });
 
 // -- Feature: restaurant list -----------------------------------------
-registerView("restaurants", () =>
-  h("section", {},
+// Empty-state wording is provisional; final copy is being settled in T-09 (#20).
+const EMPTY_RESTAURANTS_MESSAGE = "No restaurants are available right now. Please check back soon.";
+
+registerView("restaurants", () => {
+  if (Data.restaurants().length === 0) {
+    return h("section", {},
+      h("h2", {}, "Restaurants"),
+      h("p", { class: "empty-state", role: "status" }, EMPTY_RESTAURANTS_MESSAGE)
+    );
+  }
+  return h("section", {},
     h("h2", {}, "Restaurants"),
     h("div", { class: "list" },
       Data.restaurants().map((r) =>
@@ -118,8 +127,8 @@ registerView("restaurants", () =>
         )
       )
     )
-  )
-);
+  );
+});
 
 // -- Feature: menu ----------------------------------------------------
 registerView("menu", ({ id }) => {
