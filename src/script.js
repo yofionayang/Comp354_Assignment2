@@ -13,7 +13,7 @@
 // ===== 1. DATA ========================================================
 // Schema:
 //   restaurants(id PK, name, cuisine, eta_min)
-//   menu_items(id PK, restaurant_id FK -> restaurants.id, name, price_cents)
+//   menu_items(id PK, restaurant_id FK -> restaurants.id, category, name, description, price_cents, available)
 const DB = {
   restaurants: [
     { id: 1, name: "Maple Street Burgers", cuisine: "Burgers", eta_min: 25 },
@@ -21,15 +21,15 @@ const DB = {
     { id: 3, name: "Casa Pizza", cuisine: "Italian", eta_min: 30 },
   ],
   menu_items: [
-    { id: 101, restaurant_id: 1, name: "Classic Burger", price_cents: 1099 },
-    { id: 102, restaurant_id: 1, name: "Poutine", price_cents: 799 },
-    { id: 103, restaurant_id: 1, name: "Milkshake", price_cents: 599 },
-    { id: 201, restaurant_id: 2, name: "Salmon Nigiri (2 pc)", price_cents: 699 },
-    { id: 202, restaurant_id: 2, name: "California Roll", price_cents: 899 },
-    { id: 203, restaurant_id: 2, name: "Miso Soup", price_cents: 399 },
-    { id: 301, restaurant_id: 3, name: "Margherita Pizza", price_cents: 1399 },
-    { id: 302, restaurant_id: 3, name: "Caesar Salad", price_cents: 899 },
-    { id: 303, restaurant_id: 3, name: "Tiramisu", price_cents: 749 },
+    { id: 101, restaurant_id: 1, category: "Mains", name: "Classic Burger", description: "Beef patty, cheddar, lettuce, tomato", price_cents: 1099, available: true },
+    { id: 102, restaurant_id: 1, category: "Sides", name: "Poutine", description: "Fries, cheese curds, gravy", price_cents: 799, available: true },
+    { id: 103, restaurant_id: 1, category: "Drinks", name: "Milkshake", description: "Vanilla, chocolate, or strawberry", price_cents: 599, available: false },
+    { id: 201, restaurant_id: 2, category: "Sushi", name: "Salmon Nigiri (2 pc)", description: "Fresh salmon over rice", price_cents: 699, available: true },
+    { id: 202, restaurant_id: 2, category: "Sushi", name: "California Roll", description: "Crab, avocado, cucumber", price_cents: 899, available: true },
+    { id: 203, restaurant_id: 2, category: "Soups", name: "Miso Soup", description: "Tofu, seaweed, green onion", price_cents: 399, available: true },
+    { id: 301, restaurant_id: 3, category: "Pizza", name: "Margherita Pizza", description: "Tomato, mozzarella, basil", price_cents: 1399, available: true },
+    { id: 302, restaurant_id: 3, category: "Salads", name: "Caesar Salad", description: "Romaine, parmesan, croutons", price_cents: 899, available: true },
+    { id: 303, restaurant_id: 3, category: "Desserts", name: "Tiramisu", description: "Espresso-soaked ladyfingers, mascarpone", price_cents: 749, available: true },
   ],
 };
 
