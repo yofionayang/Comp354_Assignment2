@@ -1,0 +1,1 @@
+Sprint Goal: Customers can browse participating restaurants, view a restaurant’s menu, and build and adjust a cart, on top of a working foundation (repository, database schema, and seed data) that all four members can run locally.
