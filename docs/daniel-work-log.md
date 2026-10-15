@@ -1,24 +1,23 @@
 # Work log: Daniel Tehrani (branch `feature/pbi-05`)
 
-Date: 2026-10-15. Baseline: `origin/main` at `233d648` ("create and add list of restaurants to browse").
-This branch was fast-forwarded to that commit before any work, so the only code it builds on is what is merged to `main`.
+Date: 2026-10-15. Baseline: `origin/main` at `3729a55` (after PR #46 cart logic and PR #47 menu were merged).
+Work was first built on `233d648` and then rebased onto `3729a55`; the rebase had no conflicts.
 
-Rule applied: only build on what is already on `main`. Work that exists only on other people's unmerged
-branches (`feature/pbi-03-restaurant-menu`, `feature/pbi-04`) was not copied, re-implemented, or depended on.
+Rule applied: only build on what is already on `main`. Nothing here copies or re-implements work that is not merged.
 
 ## Status of my assigned issues (assignee `Danny-Desperado`)
 
 | Issue | Task | Status | Why |
 |---|---|---|---|
-| #23 | T-12 Restaurant list page UI with empty state | **Done** | Builds directly on Mark's list on `main` |
+| #23 | T-12 Restaurant list page UI with empty state | **Done** | Builds on Mark's list on `main` |
 | #25 | T-14 Wireframe menu page | **Done** | `docs/wireframes/menu-page.md` |
 | #34 | T-23 Wireframe cart page | **Done** | `docs/wireframes/cart-page.md` |
 | #19 | T-08 Verify all four can run from `main` | **Partly done** | Run guide and headless check done (`docs/run-from-main.md`); the four sign-off rows need each member |
-| #27 | T-16 Menu page UI | **Not started: already on Evan's branch** | Evan implemented the menu view, CSS and data fields on `feature/pbi-03-restaurant-menu` (unmerged). Doing it again here would duplicate and conflict. Suggest we reassign or close T-16 once his PR merges, or I review/polish after the merge |
-| #36 | T-25 Cart page UI | **Blocked** | Needs cart state and logic (T-19/T-20/T-21/T-24), which exist only as an unmerged first pass on `feature/pbi-04`. Wireframe (T-23) is ready so this can start right after that merges |
+| #27 | T-16 Menu page UI | **Done by Evan** | PR #47 implements the menu view, category grouping, prices and "Unavailable" badge. Suggest closing T-16 or reassigning any leftover polish |
+| #36 | T-25 Cart page UI | **Not started, partly unblocked** | `State.cart` and `addToCart` are now on `main` (PR #46). Still missing: decrease/remove and min-quantity-1 rules and line/order totals (T-24, #35, Yu), and the `Add` button (T-21, #32, Mark). The cart wireframe is ready |
 
-Not touched: PBI #5 (select a pickup time) and everything else outside Sprint 1's goal (browse, menu, cart). The
-branch is named `pbi-05` but none of my sprint tasks belong to that PBI.
+Not touched: PBI #5 (select a pickup time) and everything outside Sprint 1's goal. The branch is named `pbi-05` but none of my
+sprint tasks belong to that PBI.
 
 ## Code changes
 
@@ -31,20 +30,22 @@ branch is named `pbi-05` but none of my sprint tasks belong to that PBI.
 `src/index.html`:
 - Added one `.empty-state` rule under `/* -- restaurant list -- */`.
 
-No changes to the data layer, State, router, exports line, README, or any cart/menu code.
+No changes to the data layer, State, router, menu code, cart code, the exports line, or the README.
 
 ## Merge notes for others
 
-- **Mark (T-17, list -> menu navigation):** the row element line (`h("div", { class: "row" }, ...`) is untouched. My edits are the lines above and below the row markup (the view now has a block body: `registerView("restaurants", () => { ... });`). Expect a trivial textual merge if you edit the row line; the closing `);` became `);` + `});`.
-- **Evan / Yu:** nothing here touches `Data`, `DB`, `State` or the `module.exports` line, so your branches should not conflict with this one on those lines. Both of your branches edit `script.js` and `index.html` near the menu/cart blocks; mine only edits the restaurant-list blocks.
-- **Yu (T-09):** please confirm or replace the empty-list message wording.
+- **Mark (T-17, list -> menu navigation):** the row element line (`h("div", { class: "row" }, ...`) is untouched. My edits are the lines above and below the row markup (the view now has a block body: `registerView("restaurants", () => { ... });`).
+- **Mark (T-21, Add button):** the menu wireframe proposes a disabled `Add` button for unavailable items; see `docs/wireframes/menu-page.md`.
+- **Yu (T-24, T-09):** please confirm the empty-list message wording (T-09), and note the cart wireframe's open question about replacing the one-restaurant `alert()` with an inline message.
 
 ## How it was verified
 
-Headless run in jsdom (Node 22) against the real `src/index.html` and `src/script.js`; 10 checks, all passing:
-boots with no script errors; 3 seeded restaurants render with names; no empty state when data exists; with the
-restaurant list emptied, the message shows with `role="status"`, no rows render, heading stays, no errors; and
-`require("./src/script.js")` still exports `DB`, `Data`, `State`, `money`.
+Headless run in jsdom (Node 22) against the real `src/index.html` and `src/script.js` after the rebase; 16 checks, all passing:
+boots with no script errors; 3 seeded restaurants render with names; no empty state when data exists; with the restaurant
+list emptied, the message shows with `role="status"`, no rows render, heading stays, no errors; `require("./src/script.js")`
+still exports `DB`, `Data`, `State`, `money`; the merged menu view renders 3 items with the unavailable badge for restaurant 1;
+`addToCart` adds with quantity 1 and increments.
+Unmodified `origin/main` (`3729a55`) was also loaded headlessly: 0 errors, 3 restaurant rows, no sidebar content.
 The check script is a throwaway and is not committed; Evan's testing tasks (T-13/T-18/T-22/T-26) own the real test suite.
 Not checked: visual appearance in a real browser, and dark mode. Worth a quick look when someone runs the app.
 

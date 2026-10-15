@@ -1,7 +1,11 @@
 # Wireframe: Menu page (T-14, issue #25)
 
 Owner: Daniel Tehrani. Covers PBI #2 (view a restaurant's menu) and the Add-to-Cart entry point from PBI #3.
-Implementation task that builds on this: T-16 (#27).
+
+Status against `main` (commit `3729a55`): Evan's PR #47 already implements the menu view this wireframe describes
+(restaurant header, back button, category headings, item name/description/price, "Unavailable" badge, empty and
+not-found states), so T-16 (#27) is effectively done. What this wireframe adds on top of `main` is the **`Add` button**
+(T-21, #32, Mark) and the disabled state for unavailable items. List -> menu navigation is T-17 (#28, Mark).
 
 ## Layout
 
@@ -61,4 +65,4 @@ existing `#sidebar` on the right, so the menu does not need its own cart UI.
 ## Open questions for the team
 
 1. Should an unavailable item hide the `Add` button or show it disabled? The wireframe shows it disabled so the layout does not jump; issue #40 ("System prevents unavailable items from being added to the cart") will need the rule enforced in cart logic as well, not just in the UI.
-2. The data fields this relies on (`category`, `description`, `available`) are not on `main` yet; they exist only on `feature/pbi-03-restaurant-menu`.
+2. The data fields this relies on (`category`, `description`, `available`) are on `main` as of PR #47. Unavailable items currently show a badge but no button at all; the wireframe proposes a disabled `Add` button so the row layout stays stable. Mark (T-21) and Evan can confirm.

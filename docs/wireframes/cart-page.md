@@ -1,7 +1,13 @@
 # Wireframe: Cart (T-23, issue #34)
 
 Owner: Daniel Tehrani. Covers PBI #4 (view and update the cart) and the display side of PBI #3.
-Implementation task that builds on this: T-25 (#36). It depends on the cart state and logic from T-19 / T-20 / T-21 / T-24.
+Implementation task that builds on this: T-25 (#36).
+
+Status against `main` (commit `3729a55`): Yu's PR #46 added the cart state (`State.cart`, a list of
+`{ itemId, quantity }`) and `addToCart(itemId)`, which adds, increments, and enforces the one-restaurant rule.
+Still missing, and owned by others: decrease/remove actions and the minimum-quantity-1 rule, and line/order totals
+(T-24, #35, Yu); the `Add` button in the menu (T-21, #32, Mark). T-25 needs those before the `[ - ]`, `[x]` and Total parts
+of this wireframe can be wired up.
 
 ## Where it lives
 
@@ -66,4 +72,4 @@ content works inside `registerView("cart", ...)`; only the container changes.
 ## Open questions for the team
 
 1. Panel or separate view (see "Where it lives")? Default in this wireframe: panel.
-2. What happens when a customer taps `Add` on an item from a second restaurant? The current cart logic on `feature/pbi-04` shows a browser `alert()`. An inline `.note` message in the cart panel would be more consistent with the rest of the UI. Needs a decision from Yu (T-19 owner).
+2. What happens when a customer taps `Add` on an item from a second restaurant? The cart logic now on `main` (`addToCart`, PR #46) shows a browser `alert()`. An inline `.note` message in the cart panel would be more consistent with the rest of the UI. Needs a decision from Yu (T-19 owner).
