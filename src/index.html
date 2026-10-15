@@ -44,6 +44,13 @@
   /* ===== FEATURE STYLES (add one block per feature below) ===== */
   /* -- restaurant list -- */
   /* -- menu -- */
+  .menu-category { margin: 20px 0 8px; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .menu-item .price { font-weight: bold; white-space: nowrap; }
+  .menu-item.unavailable { opacity: .55; }
+  .menu-item.unavailable .name { text-decoration: line-through; }
+  .badge-unavailable { display: inline-block; margin-top: 2px; font-size: .8rem; color: var(--warn); border: 1px solid var(--warn); border-radius: 999px; padding: 0 8px; }
+
+
   /* -- cart -- */
 </style>
 </head>
