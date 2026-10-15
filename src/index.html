@@ -1,1 +1,61 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickBite</title>
+<style>
+  /* ===== TOKENS ===== */
+  :root {
+    --bg: #fbf8f3; --ink: #1d2a24; --muted: #66726b; --line: #e3ddd0;
+    --card: #ffffff; --accent: #1f6f50; --accent-ink: #ffffff; --warn: #b3412f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #151a17; --ink: #eef2ee; --muted: #9aa8a0; --line: #2b3530;
+            --card: #1e2521; --accent: #4fb88c; --accent-ink: #0d1411; --warn: #e07a66; }
+  }
+
+  /* ===== BASE ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
+  h2 { font-size: 1.2rem; margin: 0 0 12px; }
+  button { font: inherit; cursor: pointer; color: var(--ink); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ===== LAYOUT ===== */
+  header { padding: 20px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 12px; }
+  header h1 { margin: 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+  header p { margin: 0; color: var(--muted); font-size: .95rem; }
+  .layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; max-width: 1000px; margin: 0 auto; padding: 24px; }
+  .layout:has(#sidebar:empty) { grid-template-columns: 1fr; max-width: 640px; }
+  #sidebar:empty { display: none; }
+  @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ===== SHARED COMPONENTS ===== */
+  .list { display: grid; gap: 10px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+  .row small { color: var(--muted); display: block; }
+  .btn { padding: 6px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 6px; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .muted { color: var(--muted); }
+  .note { color: var(--warn); font-size: .85rem; }
+
+  /* ===== FEATURE STYLES (add one block per feature below) ===== */
+  /* -- restaurant list -- */
+  /* -- menu -- */
+  /* -- cart -- */
+</style>
+</head>
+<body>
+  <header>
+    <h1>QuickBite</h1>
+    <p>Order from local restaurants</p>
+  </header>
+  <div class="layout">
+    <main id="app" aria-live="polite"></main>   <!-- current view renders here -->
+    <aside id="sidebar"></aside>                <!-- panels (e.g. cart) render here -->
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
