@@ -38,6 +38,13 @@ const Data = {
   restaurant: (id) => DB.restaurants.find((r) => r.id === id),
   menuFor: (restaurantId) => DB.menu_items.filter((m) => m.restaurant_id === restaurantId),
   menuItem: (id) => DB.menu_items.find((m) => m.id === id),
+  menuByCategory: (restaurantId) => {
+  const groups = {};
+  Data.menuFor(restaurantId).forEach((m) => {
+    (groups[m.category] = groups[m.category] || []).push(m);
+  });
+  return groups;   // { "Mains": [...], "Sides": [...] }
+  },
 };
 
 // ===== 2. UTILS =======================================================
@@ -102,8 +109,38 @@ function render() {
 // -- Feature: restaurant list (not built yet) -------------------------
 // registerView("restaurants", () => ...);
 
-// -- Feature: menu (not built yet) ------------------------------------
-// registerView("menu", ({ id }) => ...);
+// -- Feature: menu ----------------------------------------------------
+registerView("menu", ({ id }) => {
+  const restaurant = Data.restaurant(Number(id));
+  if (!restaurant) {
+    return h("div", {},
+      h("p", { class: "note" }, "Restaurant not found."),
+      h("button", { class: "btn", onclick: () => navigate("restaurants") }, "Back to restaurants"));
+  }
+
+  const groups = Data.menuByCategory(restaurant.id);
+  const categories = Object.keys(groups);
+
+  return h("section", {},
+    h("button", { class: "btn", onclick: () => navigate("restaurants") }, "← Back to restaurants"),
+    h("h2", {}, restaurant.name),
+    h("p", { class: "muted" }, `${restaurant.cuisine} · about ${restaurant.eta_min} min`),
+    categories.length === 0
+      ? h("p", { class: "muted" }, "This restaurant has no menu items yet.")
+      : categories.map((cat) =>
+          h("div", {},
+            h("h3", { class: "menu-category" }, cat),
+            h("div", { class: "list" }, groups[cat].map(menuItemRow)))));
+});
+
+function menuItemRow(item) {
+  return h("div", { class: "row menu-item" + (item.available ? "" : " unavailable") },
+    h("div", {},
+      h("span", { class: "name" }, item.name),
+      h("small", {}, item.description),
+      item.available ? null : h("span", { class: "badge-unavailable" }, "Unavailable")),
+    h("span", { class: "price" }, money(item.price_cents)));
+}
 
 // -- Feature: cart (not built yet) ------------------------------------
 // State.set({ cart: [] });
