@@ -240,7 +240,7 @@ registerPanel(() => {
     cart.length === 0
       ? h("p", { class: "muted" }, "Your cart is empty.")
       : [
-          cart.map((c) => {
+          ...cart.map((c) => {
             const it = Data.menuItem(c.itemId);
             return h("div", { class: "row" },
               h("span", {}, `${it.name} × ${c.quantity}`),
