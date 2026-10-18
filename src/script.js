@@ -222,20 +222,34 @@ function addToCart(itemId) {
   return true;
 }
  
-// Integration fix: minimal cart panel so added items are visible.
-// If PBI-05 adds its own cart panel, replace this one (don't register two).
+// Remove one item (all of its quantity) from the cart
+function removeFromCart(itemId) {
+  State.set({ cart: State.get("cart").filter((c) => c.itemId !== itemId) });
+}
+ 
+// Empty the whole cart
+function clearCart() {
+  State.set({ cart: [] });
+}
+ 
+// Cart panel: shows items with a Remove button each, plus Clear cart
 registerPanel(() => {
   const cart = State.get("cart");
   return h("div", { class: "panel" },
     h("h2", {}, "Your order"),
     cart.length === 0
       ? h("p", { class: "muted" }, "Your cart is empty.")
-      : cart.map((c) => {
-          const it = Data.menuItem(c.itemId);
-          return h("div", { class: "row" },
-            h("span", {}, `${it.name} × ${c.quantity}`),
-            h("span", {}, money(it.price_cents * c.quantity)));
-        }));
+      : [
+          cart.map((c) => {
+            const it = Data.menuItem(c.itemId);
+            return h("div", { class: "row" },
+              h("span", {}, `${it.name} × ${c.quantity}`),
+              h("span", {},
+                money(it.price_cents * c.quantity),
+                h("button", { class: "btn", style: "margin-left:10px", onclick: () => removeFromCart(c.itemId) }, "Remove")));
+          }),
+          h("button", { class: "btn", style: "margin-top:10px", onclick: clearCart }, "Clear cart"),
+        ]);
 });
  
  
@@ -246,4 +260,4 @@ if (typeof document !== "undefined") {
 }
  
 // Lets Node tests import the logic: require("./script.js")
-if (typeof module !== "undefined") module.exports = { DB, Data, State, money, addToCart };
+if (typeof module !== "undefined") module.exports = { DB, Data, State, money, addToCart, removeFromCart, clearCart };
