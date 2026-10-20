@@ -25,7 +25,7 @@ Not yet implemented
   - Restaurant-side order list and status updates (PBI-08, PBI-09)
   - Customer order status (PBI-10)
   - Filtering restaurants by cuisine (PBI-12)
-  - 
+    
 Project structure
 
 File	           Purpose
